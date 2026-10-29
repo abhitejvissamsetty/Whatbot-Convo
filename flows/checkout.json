@@ -1,0 +1,307 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "PRODUCT": [
+      "CUSTOMER"
+    ],
+    "CUSTOMER": [
+      "DELIVERY"
+    ],
+    "DELIVERY": [
+      "REVIEW"
+    ],
+    "REVIEW": []
+  },
+  "screens": [
+    {
+      "id": "PRODUCT",
+      "title": "Your selection",
+      "data": {
+        "error": {
+          "type": "string",
+          "__example__": ""
+        },
+        "summary": {
+          "type": "string",
+          "__example__": "Canvas Bag \u00d7 1"
+        },
+        "quantity": {
+          "type": "string",
+          "__example__": "1"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextBody",
+                "text": "${data.error}"
+              },
+              {
+                "type": "TextBody",
+                "text": "${data.summary}"
+              },
+              {
+                "type": "TextInput",
+                "name": "quantity",
+                "label": "Quantities (comma-separated)",
+                "required": true,
+                "init-value": "${data.quantity}"
+              },
+              {
+                "type": "Footer",
+                "label": "Continue",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "quantity": "${form.quantity}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CUSTOMER",
+      "title": "Contact details",
+      "data": {
+        "error": {
+          "type": "string",
+          "__example__": ""
+        },
+        "phone": {
+          "type": "string",
+          "__example__": "919876543210"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextBody",
+                "text": "${data.error}"
+              },
+              {
+                "type": "TextInput",
+                "name": "name",
+                "label": "Full name",
+                "required": true
+              },
+              {
+                "type": "TextInput",
+                "name": "phone",
+                "label": "WhatsApp number",
+                "required": true,
+                "init-value": "${data.phone}",
+                "input-type": "phone"
+              },
+              {
+                "type": "TextInput",
+                "name": "email",
+                "label": "Email",
+                "required": false,
+                "input-type": "email"
+              },
+              {
+                "type": "Footer",
+                "label": "Continue",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "name": "${form.name}",
+                    "phone": "${form.phone}",
+                    "email": "${form.email}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DELIVERY",
+      "title": "Delivery address",
+      "data": {
+        "error": {
+          "type": "string",
+          "__example__": ""
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextBody",
+                "text": "${data.error}"
+              },
+              {
+                "type": "TextInput",
+                "name": "address_1",
+                "label": "Address",
+                "required": true
+              },
+              {
+                "type": "TextInput",
+                "name": "address_2",
+                "label": "Address line 2",
+                "required": false
+              },
+              {
+                "type": "TextInput",
+                "name": "city",
+                "label": "City",
+                "required": true
+              },
+              {
+                "type": "TextInput",
+                "name": "state",
+                "label": "State code (e.g. TS)",
+                "required": true
+              },
+              {
+                "type": "TextInput",
+                "name": "country",
+                "label": "Country code",
+                "required": true,
+                "init-value": "IN"
+              },
+              {
+                "type": "TextInput",
+                "name": "postcode",
+                "label": "PIN / postcode",
+                "required": true
+              },
+              {
+                "type": "TextInput",
+                "name": "coupon",
+                "label": "Coupon",
+                "required": false
+              },
+              {
+                "type": "Footer",
+                "label": "Continue",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "address_1": "${form.address_1}",
+                    "address_2": "${form.address_2}",
+                    "city": "${form.city}",
+                    "state": "${form.state}",
+                    "country": "${form.country}",
+                    "postcode": "${form.postcode}",
+                    "coupon": "${form.coupon}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "REVIEW",
+      "title": "Review your order",
+      "data": {
+        "error": {
+          "type": "string",
+          "__example__": ""
+        },
+        "summary": {
+          "type": "string",
+          "__example__": "Total: INR 349.00"
+        },
+        "shipping_method": {
+          "type": "string",
+          "__example__": "flat_rate:1"
+        },
+        "quote_fingerprint": {
+          "type": "string",
+          "__example__": "example"
+        },
+        "shipping_methods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            }
+          },
+          "__example__": [
+            {
+              "id": "flat_rate:1",
+              "title": "Standard shipping"
+            }
+          ]
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextBody",
+                "text": "${data.error}"
+              },
+              {
+                "type": "TextBody",
+                "text": "${data.summary}"
+              },
+              {
+                "type": "Dropdown",
+                "name": "shipping_method",
+                "label": "Shipping method",
+                "required": true,
+                "data-source": "${data.shipping_methods}",
+                "init-value": "${data.shipping_method}"
+              },
+              {
+                "type": "OptIn",
+                "name": "confirm",
+                "label": "I confirm this order and total",
+                "required": true
+              },
+              {
+                "type": "Footer",
+                "label": "Confirm order",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "confirm": "${form.confirm}",
+                    "shipping_method": "${form.shipping_method}",
+                    "quote_fingerprint": "${data.quote_fingerprint}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "terminal": true,
+      "success": true
+    }
+  ]
+}

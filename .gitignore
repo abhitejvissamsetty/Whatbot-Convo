@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.aws/
+.codex/
+.agents/
+coverage/
+artifacts/*
+!artifacts/wa-commerce-bridge-0.2.0.zip
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+.DS_Store
+backups/

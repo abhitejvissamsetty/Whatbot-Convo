@@ -1,0 +1,81 @@
+CREATE TABLE IF NOT EXISTS wa_mutex (id TINYINT PRIMARY KEY) ENGINE=InnoDB;
+INSERT IGNORE INTO wa_mutex (id) VALUES (1);
+
+CREATE TABLE IF NOT EXISTS wa_customers (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL,
+  wa_id VARCHAR(20) GENERATED ALWAYS AS (JSON_UNQUOTE(JSON_EXTRACT(data, '$.waId'))) STORED,
+  UNIQUE KEY uq_customer_wa (wa_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_conversations (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_messages (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL,
+  provider_id VARCHAR(255) GENERATED ALWAYS AS (JSON_UNQUOTE(JSON_EXTRACT(data, '$.providerId'))) STORED,
+  UNIQUE KEY uq_message_provider (provider_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_carts (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_flows (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL,
+  flow_token VARCHAR(64) GENERATED ALWAYS AS (JSON_UNQUOTE(JSON_EXTRACT(data, '$.token'))) STORED,
+  UNIQUE KEY uq_flow_token (flow_token)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_orders (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL,
+  checkout_session_id VARCHAR(64) GENERATED ALWAYS AS (JSON_UNQUOTE(JSON_EXTRACT(data, '$.checkoutSessionId'))) STORED,
+  flow_session_id VARCHAR(64) GENERATED ALWAYS AS (JSON_UNQUOTE(JSON_EXTRACT(data, '$.flowSessionId'))) STORED,
+  wc_order_id BIGINT GENERATED ALWAYS AS (JSON_EXTRACT(data, '$.wcOrderId')) STORED,
+  UNIQUE KEY uq_checkout (checkout_session_id),
+  UNIQUE KEY uq_flow_order (flow_session_id),
+  UNIQUE KEY uq_woo_order (wc_order_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_events (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_jobs (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_outbox (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_handoffs (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_operators (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL,
+  email VARCHAR(254) GENERATED ALWAYS AS (JSON_UNQUOTE(JSON_EXTRACT(data, '$.email'))) STORED,
+  UNIQUE KEY uq_operator_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_sessions (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wa_usage (
+  id VARCHAR(190) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+  data JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

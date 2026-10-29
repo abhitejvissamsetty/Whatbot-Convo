@@ -1,0 +1,22 @@
+{
+  "name": "whatsapp-woocommerce-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.9" },
+  "scripts": {
+    "repo:create": "node scripts/create-repository.js",
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "restart:local": "node --env-file-if-exists=.env scripts/restart-local.js",
+    "worker": "node --env-file-if-exists=.env src/worker.js",
+    "dev": "node --watch --env-file-if-exists=.env src/server.js",
+    "test": "node scripts/test.js",
+    "test:browser": "node tests/browser/panel.js",
+    "check": "node scripts/check.js",
+    "db:migrate": "node --env-file-if-exists=.env scripts/migrate.js",
+    "operator:create": "node --env-file-if-exists=.env scripts/create-operator.js",
+    "customer:delete": "node --env-file-if-exists=.env scripts/delete-customer.js"
+  },
+  "dependencies": { "express": "^5.1.0", "mysql2": "^3.14.0" },
+  "devDependencies": { "playwright": "^1.64.1" }
+}

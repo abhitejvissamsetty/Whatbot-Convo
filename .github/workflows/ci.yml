@@ -1,0 +1,31 @@
+name: Validate
+on: [push, pull_request]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: wa_test
+          MYSQL_ROOT_PASSWORD: ephemeral-ci-password
+        ports: ["3306:3306"]
+        options: --health-cmd="mysqladmin ping -h localhost" --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install
+      - run: npm run check
+      - run: npm test
+        env:
+          MYSQL_TEST_URL: mysql://root:ephemeral-ci-password@127.0.0.1:3306/wa_test
+      - run: php -l wordpress/wa-commerce-bridge/wa-commerce-bridge.php
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panel-screenshots
+          path: artifacts/
